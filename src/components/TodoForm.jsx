@@ -17,23 +17,26 @@ export default function TodoForm({ fetchData }) {
   const queryClient = useQueryClient()
 
   const mutation = useMutation(addTodo, {
-    
+    onSuccess: () => {
+      queryClient.invalidateQueries('todos')
+    }
   })
 
-  // TODO: useMutation 으로 리팩터링 하세요.
   const handleAddTodo = async (e) => {
     e.preventDefault();
     setTitle("");
     setContents("");
-    await todoApi.post("/todos", {
-      id: Date.now().toString(),
-      title,
-      contents,
-      isCompleted: false,
-      createdAt: Date.now(),
-    });
-    await fetchData();
-  };
+
+
+   const newTodo = {
+    id: Data.now().toString(),
+    title,
+    contents,
+    isCompleted: false,
+    createdAt: Data.now()
+   }
+
+   mutation.mutate(newTodo)
 
   return (
     <form onSubmit={handleAddTodo}>
@@ -57,4 +60,5 @@ export default function TodoForm({ fetchData }) {
       <button type="submit">추가하기</button>
     </form>
   );
+}
 }
