@@ -1,9 +1,24 @@
 import { useState } from "react";
 import { todoApi } from "../api/todos";
+import { useMutation, useQueryClient } from "react-query";
+import axios from "axios";
+
+const ApiKey = "http://localhost:4000/todos"
+
+
+const addTodo = async (newTodo) => {
+  const res = await axios.post(ApiKey + "/todos", newTodo)
+  return res.data
+}
 
 export default function TodoForm({ fetchData }) {
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
+  const queryClient = useQueryClient()
+
+  const mutation = useMutation(addTodo, {
+    
+  })
 
   // TODO: useMutation 으로 리팩터링 하세요.
   const handleAddTodo = async (e) => {
